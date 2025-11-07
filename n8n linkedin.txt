@@ -1,0 +1,29 @@
+Automated Job Information Retrieval Process via n8n and LinkedIn
+The following diagram represents an automated process for large-scale information retrieval of job postings from the LinkedIn platform, executed through n8n. In practice, this workflow searches LinkedIn for job opportunities based on criteria initially provided by the user. Once the relevant postings are retrieved, the system extracts and organizes the specified data into a Google Sheets file. Subsequently, the model compares each job posting with the user’s resume and LinkedIn profile, assigning a compatibility score to each position. If this score exceeds a predefined threshold, an automated agent generates a personalized cover letter, saves it to the user’s Google Drive, and logs it into the Google Sheet.
+
+At a technical level, the process is divided into three main components:
+	1. Job Filtering: The initial search, retrieval, and storage of job postings into Google Sheets.
+	2. Job Evaluation: The comparison of each job posting against the user’s resume and LinkedIn profile, resulting in a calculated compatibility score.
+	3. CV Creation: When the compatibility score surpasses the minimum threshold, an automated agent generates a tailored cover letter highlighting the user’s most relevant qualifications for the specific position.
+
+Node Analysis 
+1.Job Filtering:
+	•Starting Sheet: The initial Google Sheets document serves as the base data structure, formatted as a table to allow seamless population with job data.
+		oOperation : Get Row(s)
+		oDocument / Sheet: From list
+	•Edit Fields: Combines the company name and job title into a single field for future validation steps.
+		oMode: Manual Mapping
+		o Fields to set: Company(string) -- {{ $json.Company }} - {{ $json['Job Title'] }}
+	• Aggregate: Consolidates all company entries to streamline data validation and prevent duplicates.
+		o Aggregate: Individual fields
+		o Input field name: Company
+	• LinkedIn Job Scraper:  Executes the data scraping operation using an Apify actor to retrieve all relevant job posting URLs and related metadata from LinkedIn.
+		o Operation: Run an Αctor
+		o Actor: LinkedIn Jobs Scraper – PPR
+		o Input JSON: {
+			"count": 100,
+			"scrapeCompany": true,
+			"urls":[      "https://www.linkedin.com/jobs/search/?currentJobId=4333857475&f_E=2%2C3&geoId=104677530&keywords=data%20analyst&origin=JOB_SEARCH_PAGE_JOB_FILTER&refresh=true&sortBy=DD"    ]}
+	• Job Dataset: Retrieves the data structure and job listing details output from the previous node (the scraper).
+	• Filter: Filters out any duplicate entries already existing in the spreadsheet, retaining only job postings associated with new company names.
+	• Append Jobs to Sheets: Appends the filtered job listings—those not yet present in the Google Sheet—to the document, thereby maintaining an up-to-date record of available opportunities.
