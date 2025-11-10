@@ -1,0 +1,18 @@
+2.	Job Evaluation:
+  •	Partially Completed Sheet: This is the completed sheet obtained after the “Job Filtering” stage.
+    o Operation : Get Row(s)
+    o	Document / Sheet: From list
+  •	Resume: This refers to the document file containing our CV. It will later be compared with the job posting.
+    o	Resource: Document
+    o	Operation: Get
+  •	Linkedin Profile: As before, this node represents the Apify agent that provides the dataset link from which we will extract our LinkedIn profile data in the next step..
+    o	Operation: Run an Αctor
+    o	Actor: LinkedIn Jobs Scraper – PPR
+    o	Input JSON: { {"url": "https://www.linkedin.com/in/xxx/"}
+  •	Profile Info: In this node, we retrieve the dataset containing our profile information. We can choose which elements to include in our analysis..
+    o	Resource: Dataset
+    o	Operation: Get Items
+    o	Dataset ID: {{ $json.defaultDatasetId }}
+  •	Job evaluation: Here, we use an AI agent that performs a comparison between the candidate’s profile, their resume, and the job posting. This process requires:
+1)  An input prompt describing the goal of the comparison. 2) A selected AI model (e.g., ChatGPT 5.0). 3) A structured output parser, which provides instructions on how to extract and format the results in JSON form.
+  •	If: A logical operator that checks the candidate’s compatibility score with the specific job. If the score is greater than 3.5/5, the process proceeds to Stage 3. Otherwise, it simply updates the sheet with the job’s evaluation score.
