@@ -16,3 +16,11 @@
   •	Job evaluation: Here, we use an AI agent that performs a comparison between the candidate’s profile, their resume, and the job posting. This process requires:
 1)  An input prompt describing the goal of the comparison. 2) A selected AI model (e.g., ChatGPT 5.0). 3) A structured output parser, which provides instructions on how to extract and format the results in JSON form.
   •	If: A logical operator that checks the candidate’s compatibility score with the specific job. If the score is greater than 3.5/5, the process proceeds to Stage 3. Otherwise, it simply updates the sheet with the job’s evaluation score.
+
+
+3.	CV Creation:
+  •	CV Generator: Once the compatibility score exceeds the threshold, the AI agent automatically generates a cover letter. This letter draws from the most relevant characteristics found in the candidate’s LinkedIn profile and resume, selecting those best suited for the specific job position.
+  •	Create a document: Creates the file containing the generated cover letter.
+  •	Append CV in doc: Inserts or appends the text file (TXT) with the cover letter into the existing document file (DOC).
+  •	Move file: Saves the finalized cover letter document to the user’s Drive account for storage.
+  •	Final Sheet: Adds the generated cover letter to the corresponding sheet, thus creating the final document and completing the entire workflow.
