@@ -1,0 +1,37 @@
+
+PREREQUISITES
+To make the above workflow function properly, the use of certain external software tools is required. These are listed below: 
+  1.	Apify: A cloud-based platform that provides tools for web scraping, data extraction, and website automation. It uses “Actors” (serverless applications) to perform various tasks.
+  2.	Google Cloud: This platform will be used to generate API keys that grant access to Google Sheets, Google Docs, and Google Drive APIs.
+
+INSTRUCTIONS
+  1.	Αpify: 
+    •	Go to https://apify.com.
+    •	Create your account (you can sign up using your Google account or any other preferred method). 
+    •	Search for “LinkedIn Jobs Scraper – PPR” (it’s free for a limited number of runs). 
+    •	Paste the URL of the LinkedIn job listings page, for example: https://www.linkedin.com/jobs/search/?position=1&pageNum=0
+    •	Enable the “Scrape company details” option. 
+    •	Select the number of companies you want to scrape. 
+    •	Click “Save and Start”. 
+    •	Once the scraper finishes running, you can download the generated JSON file and import it into n8n. You can also customize the structure of the JSON file as needed.
+
+!! To obtain the access token for n8n, you can simply log in using the Google account that is already linked to Apify.
+
+  2.	Google cloud: We use the Google Cloud platform to access various Google APIs (such as Sheets, Docs, and Drive), which are integrated into our workflow.:
+    •	Go to https://console.cloud.google.com .
+    •	Sign in with your Google account. Google offers €300 worth of free credits for 90 days, which can be used across all available services. 
+    •	The first thing you need to do is create your project: Click on “My project” → “Create project” → Enter your project name and select your organization (if applicable).
+    •	In the search bar, type the name of the API you wish to use (e.g., Google Sheets API, Google Drive API).
+    •	Once you access the API’s page, click “Enable this API”. 
+    •	From the left-hand menu, select “APIs and Services”. You’ll be redirected to a page listing all your enabled APIs”.
+    •	Next, go to the “Credentials” section.
+    •	Click on “Create Credentials”, then select “OAuth Client ID”. This is necessary for connecting your account to your workflow (e.g., in n8n). 
+    •	In the new window, set the Application Type to “Web Application” and enter a suitable name for your app.
+    •	In the “Authorized redirect URIs” field, paste the URI provided in the n8n Google Sheets node, under the “Credential to connect with” section.
+    •	Click Create. The system will automatically generate a Client ID and a Client Secret. 
+    •	Copy these credentials and paste them in the “Credential to connect with” field in n8n. Your connection should now be ready, and you can start using Google API within your workflow.
+
+!! If the email address associated with your Google Cloud account and your n8n account are different, you must add the n8n account email as a test user in Google Cloud.
+To do this:
+  •	Go to the OAuth consent screen settings.
+  •	Under the “Test Users” section, add the email address that should have access to the API.This ensures that the second account is authorized to use the API connection.
